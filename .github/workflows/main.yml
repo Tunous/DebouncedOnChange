@@ -14,7 +14,7 @@ jobs:
     - run: swift test
 
   lint:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - uses: norio-nomura/action-swiftlint@3.2.1
