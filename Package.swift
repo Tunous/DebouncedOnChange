@@ -8,7 +8,7 @@ let package = Package(
     products: [
         .library(
             name: "DebouncedOnChange",
-            targets: ["DebouncedOnChange"]),
+            targets: ["DebouncedOnChange"])
     ],
     dependencies: [
     ],
@@ -18,6 +18,6 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "DebouncedOnChangeTests",
-            dependencies: ["DebouncedOnChange"]),
+            dependencies: ["DebouncedOnChange"])
     ]
 )

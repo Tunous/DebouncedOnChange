@@ -13,6 +13,6 @@ final class DelayedTaskTest: XCTestCase {
         }
 
         wait(for: [negativeExpectation], timeout: 0.1)
-        wait(for: [positiveExpectation], timeout: 0.11)
+        wait(for: [positiveExpectation], timeout: 0.15)
     }
 }

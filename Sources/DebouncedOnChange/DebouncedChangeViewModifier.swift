@@ -2,12 +2,12 @@ import SwiftUI
 
 extension View {
 
-    /// Adds a modifier for this view that fires an action only when a time interval in seconds represented by `debounceTime`
-    /// elapses between value changes.
+    /// Adds a modifier for this view that fires an action only when a time interval in seconds represented by
+    /// `debounceTime` elapses between value changes.
     ///
-    /// Each time the value changes before `debounceTime` passes, the previous action will be cancelled and the next action
-    /// will be scheduled to run after that time passes again. This mean that the action will only execute after changes to the value
-    /// stay unmodified for the specified `debounceTime` in seconds.
+    /// Each time the value changes before `debounceTime` passes, the previous action will be cancelled and the next
+    /// action /// will be scheduled to run after that time passes again. This mean that the action will only execute
+    /// after changes to the value /// stay unmodified for the specified `debounceTime` in seconds.
     ///
     /// - Parameters:
     ///   - value: The value to check against when determining whether to run the closure.
