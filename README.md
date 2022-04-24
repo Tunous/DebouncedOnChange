@@ -5,6 +5,9 @@ A SwiftUI onChange view modifier with additional debounce time.
 ## Usage
 
 ```swift
+import SwiftUI
+import DebouncedOnChange
+
 struct ExampleView: View {
     @State private var text = ""
 
