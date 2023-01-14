@@ -1,5 +1,7 @@
 # DebouncedOnChange
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FTunous%2FDebouncedOnChange%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/Tunous/DebouncedOnChange) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FTunous%2FDebouncedOnChange%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/Tunous/DebouncedOnChange)
+
 A SwiftUI onChange view modifier with additional debounce time.
 
 ## Usage
@@ -27,7 +29,7 @@ struct ExampleView: View {
 Add the following to the dependencies array in your "Package.swift" file:
 
 ```swift
-.package(url: "https://github.com/Tunous/DebouncedOnChange.git", .upToNextMajor(from: "1.0.0"))
+.package(url: "https://github.com/Tunous/DebouncedOnChange.git", .upToNextMajor(from: "1.0.2"))
 ```
 
 Or add https://github.com/Tunous/DebouncedOnChange.git, to the list of Swift packages for any project in Xcode.
