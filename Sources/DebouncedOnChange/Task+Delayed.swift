@@ -18,9 +18,13 @@ extension Task {
     ) -> Self where Success == Void, Failure == Never {
         Self {
             do {
-                try await Task<Never, Never>.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+                try await Task<Never, Never>.sleep(seconds: seconds)
                 await operation()
             } catch {}
         }
+    }
+
+    static func sleep(seconds: TimeInterval) async throws where Success == Never, Failure == Never {
+        try await Task<Success, Failure>.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
     }
 }
