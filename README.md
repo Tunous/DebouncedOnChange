@@ -18,6 +18,9 @@ struct ExampleView: View {
             .onChange(of: text, debounceTime: 2) { newValue in
                 // Action executed each time 2 seconds pass since change of text property
             }
+            .task(id: text, debounceTime: .milliseconds(250)) { 
+                // Asynchronous action executed each time 250 milliseconds pass since change of text property
+            }
     }
 }
 ``` 
