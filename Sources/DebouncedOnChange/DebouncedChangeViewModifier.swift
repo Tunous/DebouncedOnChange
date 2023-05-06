@@ -2,7 +2,8 @@ import SwiftUI
 
 extension View {
 
-    /// Adds a modifier for this view that fires an action only when a specified `debounceTime` elapses between value changes.
+    /// Adds a modifier for this view that fires an action only when a specified `debounceTime` elapses between value
+    /// changes.
     ///
     /// Each time the value changes before `debounceTime` passes, the previous action will be cancelled and the next
     /// action will be scheduled to run after that time passes again. This mean that the action will only execute
@@ -39,10 +40,10 @@ extension View {
     ///   - debounceTime: The time in seconds to wait after each value change before running `action` closure.
     ///   - action: A closure to run when the value changes.
     /// - Returns: A view that fires an action after debounced time when the specified value changes.
-    @available(iOS, deprecated: 16.0, message: "Use version of this method which accepts Duration type as debounceTime")
-    @available(macOS, deprecated: 13.0, message: "Use version of this method which accepts Duration type as debounceTime")
-    @available(tvOS, deprecated: 16.0, message: "Use version of this method which accepts Duration type as debounceTime")
-    @available(watchOS, deprecated: 9.0, message: "Use version of this method which accepts Duration type as debounceTime")
+    @available(iOS, deprecated: 16.0, message: "Use version of this method accepting Duration type as debounceTime")
+    @available(macOS, deprecated: 13.0, message: "Use version of this method accepting Duration type as debounceTime")
+    @available(tvOS, deprecated: 16.0, message: "Use version of this method accepting Duration type as debounceTime")
+    @available(watchOS, deprecated: 9.0, message: "Use version of this method accepting Duration type as debounceTime")
     public func onChange<Value>(
         of value: Value,
         debounceTime: TimeInterval,
