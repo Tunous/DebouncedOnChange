@@ -18,7 +18,7 @@ extension View {
     /// - Returns: A view that runs the specified action asynchronously before the view appears, or restarts the task
     ///     with the id value changes after debounced time.
     @available(iOS 16.0, *)
-    @available(macOS 13.0, *)
+    @available(macOS 14.0, *)
     @available(tvOS 16.0, *)
     @available(watchOS 9.0, *)
     public func task<T>(
