@@ -21,7 +21,7 @@ extension View {
     public func onChange<Value>(
         of value: Value,
         debounceTime: Duration,
-        perform action: @escaping (_ oldValue: Value, _ newValue: Value) -> Void
+        perform action: @escaping (_ oldValue: Value, _ newValue: Value, _ task: Task<Void, Never>?) -> Void
     ) -> some View where Value: Equatable {
         self.modifier(DebouncedChangeViewModifier(trigger: value, action: action) {
             try await Task.sleep(for: debounceTime)
@@ -35,17 +35,17 @@ extension View {
 @available(watchOS 9.0, *)
 private struct DebouncedChangeViewModifier<Value>: ViewModifier where Value: Equatable {
     let trigger: Value
-    let action: (Value, Value) -> Void
+    let action: (Value, Value, Task<Void, Never>?) -> Void
     let sleep: @Sendable () async throws -> Void
-
-    @State public var debouncedTask: Task<Void, Never>?
+  
+    @State var debouncedTask: Task<Void, Never>?
 
     func body(content: Content) -> some View {
         content.onChange(of: trigger) { oldValue, newValue in
             debouncedTask?.cancel()
             debouncedTask = Task {
                 do { try await sleep() } catch { return }
-                action(oldValue, newValue)
+                action(oldValue, newValue, debouncedTask)
             }
         }
     }
