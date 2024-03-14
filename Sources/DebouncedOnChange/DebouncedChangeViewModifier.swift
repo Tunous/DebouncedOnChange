@@ -41,11 +41,11 @@ private struct DebouncedChangeViewModifier<Value>: ViewModifier where Value: Equ
     @State private var debouncedTask: Task<Void, Never>?
 
     func body(content: Content) -> some View {
-        content.onChange(of: trigger) { oldValue, value in
+        content.onChange(of: trigger) { oldValue, newValue in
             debouncedTask?.cancel()
             debouncedTask = Task {
                 do { try await sleep() } catch { return }
-                action(oldValue, value)
+                action(oldValue, newValue)
             }
         }
     }
