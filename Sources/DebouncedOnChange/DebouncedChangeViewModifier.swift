@@ -19,7 +19,7 @@ extension View {
     @available(macOS 14.0, *)
     @available(tvOS 17.0, *)
     @available(watchOS 10.0, *)
-    @available(xrOS 1.0, *)
+    @available(visionOS 1.0, *)
     public func onChange<Value>(
         of value: Value,
         initial: Bool = false,
@@ -56,7 +56,7 @@ extension View {
     @available(macOS 14.0, *)
     @available(tvOS 17.0, *)
     @available(watchOS 10.0, *)
-    @available(xrOS 1.0, *)
+    @available(visionOS 1.0, *)
     public func onChange<Value>(
         of value: Value,
         initial: Bool = false,
@@ -152,7 +152,7 @@ private struct DebouncedChange1ParamViewModifier<Value>: ViewModifier where Valu
 @available(macOS 14.0, *)
 @available(tvOS 17.0, *)
 @available(watchOS 10.0, *)
-@available(xrOS 1.0, *)
+@available(visionOS 1.0, *)
 private struct DebouncedChangeNoParamViewModifier<Value>: ViewModifier where Value: Equatable {
     let trigger: Value
     let initial: Bool
@@ -173,7 +173,7 @@ private struct DebouncedChangeNoParamViewModifier<Value>: ViewModifier where Val
 @available(macOS 14.0, *)
 @available(tvOS 17.0, *)
 @available(watchOS 10.0, *)
-@available(xrOS 1.0, *)
+@available(visionOS 1.0, *)
 private struct DebouncedChange2ParamViewModifier<Value>: ViewModifier where Value: Equatable {
     let trigger: Value
     let initial: Bool

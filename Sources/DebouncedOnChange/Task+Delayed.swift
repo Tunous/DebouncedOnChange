@@ -32,7 +32,7 @@ extension Task {
     @available(macOS 14.0, *)
     @available(tvOS 17.0, *)
     @available(watchOS 10.0, *)
-    @available(xrOS 1.0, *)
+    @available(visionOS 1.0, *)
     static func delayed(
         duration: Duration,
         operation: @escaping () async -> Void
