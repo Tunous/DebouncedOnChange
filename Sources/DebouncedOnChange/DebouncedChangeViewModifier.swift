@@ -89,10 +89,10 @@ extension View {
     @available(macOS 13.0, *)
     @available(tvOS 16.0, *)
     @available(watchOS 9.0, *)
-    @available(iOS, deprecated: 17.0, message: "Use `onChange` with a two or zero parameter action closure instead.")
-    @available(macOS, deprecated: 14.0, message: "Use `onChange` with a two or zero parameter action closure instead.")
-    @available(tvOS, deprecated: 17.0, message: "Use `onChange` with a two or zero parameter action closure instead.")
-    @available(watchOS, deprecated: 10.0, message: "Use `onChange` with a two or zero parameter action closure instead.")
+    @available(iOS, deprecated: 17.0, message: "Use `onChange` with a two or zero parameter action closure instead")
+    @available(macOS, deprecated: 14.0, message: "Use `onChange` with a two or zero parameter action closure instead")
+    @available(tvOS, deprecated: 17.0, message: "Use `onChange` with a two or zero parameter action closure instead")
+    @available(watchOS, deprecated: 10.0, message: "Use `onChange` with a two or zero parameter action closure instead")
     public func onChange<Value>(
         of value: Value,
         debounceTime: Duration,
@@ -183,10 +183,10 @@ private struct DebouncedChange2ParamViewModifier<Value>: ViewModifier where Valu
     @State private var debouncedTask: Task<Void, Never>?
 
     func body(content: Content) -> some View {
-        content.onChange(of: trigger, initial: initial) { a, b in
+        content.onChange(of: trigger, initial: initial) { lhs, rhs in
             debouncedTask?.cancel()
             debouncedTask = Task.delayed(duration: debounceDuration) {
-                action(a, b)
+                action(lhs, rhs)
             }
         }
     }
