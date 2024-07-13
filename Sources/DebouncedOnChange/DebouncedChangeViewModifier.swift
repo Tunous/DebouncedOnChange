@@ -13,6 +13,7 @@ extension View {
     ///   - value: The value to check against when determining whether to run the closure.
     ///   - initial: Whether the action should be run (after debounce time) when this view initially appears.
     ///   - debounceTime: The time to wait after each value change before running `action` closure.
+    ///   - debouncer: Object used to manually cancel debounced actions.
     ///   - action: A closure to run when the value changes.
     /// - Returns: A view that fires an action after debounced time when the specified value changes.
     @available(iOS 17, *)
@@ -24,6 +25,7 @@ extension View {
         of value: Value,
         initial: Bool = false,
         debounceTime: Duration,
+        debouncer: Binding<Debouncer>? = nil,
         _ action: @escaping () -> Void
     ) -> some View where Value: Equatable {
         self.modifier(
@@ -31,7 +33,8 @@ extension View {
                 trigger: value,
                 initial: initial,
                 action: action,
-                debounceDuration: debounceTime
+                debounceDuration: debounceTime,
+                debouncer: debouncer
             )
         )
     }
@@ -47,6 +50,7 @@ extension View {
     ///   - value: The value to check against when determining whether to run the closure.
     ///   - initial: Whether the action should be run (after debounce time) when this view initially appears.
     ///   - debounceTime: The time to wait after each value change before running `action` closure.
+    ///   - debouncer: Object used to manually cancel debounced actions.
     ///   - action: A closure to run when the value changes.
     ///   - oldValue: The old value that failed the comparison check (or the
     ///     initial value when requested).
@@ -61,6 +65,7 @@ extension View {
         of value: Value,
         initial: Bool = false,
         debounceTime: Duration,
+        debouncer: Binding<Debouncer>? = nil,
         _ action: @escaping (_ oldValue: Value, _ newValue: Value) -> Void
     ) -> some View where Value: Equatable {
         self.modifier(
@@ -68,7 +73,8 @@ extension View {
                 trigger: value,
                 initial: initial,
                 action: action,
-                debounceDuration: debounceTime
+                debounceDuration: debounceTime,
+                debouncer: debouncer
             )
         )
     }
@@ -83,6 +89,7 @@ extension View {
     /// - Parameters:
     ///   - value: The value to check against when determining whether to run the closure.
     ///   - debounceTime: The time to wait after each value change before running `action` closure.
+    ///   - debouncer: Object used to manually cancel debounced actions.
     ///   - action: A closure to run when the value changes.
     /// - Returns: A view that fires an action after debounced time when the specified value changes.
     @available(iOS 16.0, *)
@@ -96,9 +103,10 @@ extension View {
     public func onChange<Value>(
         of value: Value,
         debounceTime: Duration,
+        debouncer: Binding<Debouncer>? = nil,
         perform action: @escaping (_ newValue: Value) -> Void
     ) -> some View where Value: Equatable {
-        self.modifier(DebouncedChange1ParamViewModifier(trigger: value, action: action) {
+        self.modifier(DebouncedChange1ParamViewModifier(trigger: value, action: action, debouncer: debouncer) {
             try await Task.sleep(for: debounceTime)
         })
     }
@@ -113,6 +121,7 @@ extension View {
     /// - Parameters:
     ///   - value: The value to check against when determining whether to run the closure.
     ///   - debounceTime: The time in seconds to wait after each value change before running `action` closure.
+    ///   - debouncer: Object used to manually cancel debounced actions.
     ///   - action: A closure to run when the value changes.
     /// - Returns: A view that fires an action after debounced time when the specified value changes.
     @available(iOS, deprecated: 16.0, message: "Use version of this method accepting Duration type as debounceTime")
@@ -122,17 +131,21 @@ extension View {
     public func onChange<Value>(
         of value: Value,
         debounceTime: TimeInterval,
+        debouncer: Binding<Debouncer>? = nil,
         perform action: @escaping (_ newValue: Value) -> Void
     ) -> some View where Value: Equatable {
-        self.modifier(DebouncedChange1ParamViewModifier(trigger: value, action: action) {
+        self.modifier(DebouncedChange1ParamViewModifier(trigger: value, action: action, debouncer: debouncer) {
             try await Task.sleep(seconds: debounceTime)
         })
     }
 }
 
+// MARK: Implementation
+
 private struct DebouncedChange1ParamViewModifier<Value>: ViewModifier where Value: Equatable {
     let trigger: Value
     let action: (Value) -> Void
+    let debouncer: Binding<Debouncer>?
     let sleep: @Sendable () async throws -> Void
 
     @State private var debouncedTask: Task<Void, Never>?
@@ -144,6 +157,7 @@ private struct DebouncedChange1ParamViewModifier<Value>: ViewModifier where Valu
                 do { try await sleep() } catch { return }
                 action(value)
             }
+            debouncer?.wrappedValue.task = debouncedTask
         }
     }
 }
@@ -158,13 +172,17 @@ private struct DebouncedChangeNoParamViewModifier<Value>: ViewModifier where Val
     let initial: Bool
     let action: () -> Void
     let debounceDuration: Duration
+    let debouncer: Binding<Debouncer>?
 
     @State private var debouncedTask: Task<Void, Never>?
 
     func body(content: Content) -> some View {
         content.onChange(of: trigger, initial: initial) {
             debouncedTask?.cancel()
-            debouncedTask = Task.delayed(duration: debounceDuration, operation: action)
+            debouncedTask = Task.delayed(duration: debounceDuration) {
+                action()
+            }
+            debouncer?.wrappedValue.task = debouncedTask
         }
     }
 }
@@ -179,6 +197,7 @@ private struct DebouncedChange2ParamViewModifier<Value>: ViewModifier where Valu
     let initial: Bool
     let action: (Value, Value) -> Void
     let debounceDuration: Duration
+    let debouncer: Binding<Debouncer>?
 
     @State private var debouncedTask: Task<Void, Never>?
 
@@ -188,6 +207,7 @@ private struct DebouncedChange2ParamViewModifier<Value>: ViewModifier where Valu
             debouncedTask = Task.delayed(duration: debounceDuration) {
                 action(lhs, rhs)
             }
+            debouncer?.wrappedValue.task = debouncedTask
         }
     }
 }
