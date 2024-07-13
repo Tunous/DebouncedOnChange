@@ -27,4 +27,21 @@ extension Task {
     static func sleep(seconds: TimeInterval) async throws where Success == Never, Failure == Never {
         try await Task<Success, Failure>.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
     }
+
+    @available(iOS 17, *)
+    @available(macOS 14.0, *)
+    @available(tvOS 17.0, *)
+    @available(watchOS 10.0, *)
+    @available(visionOS 1.0, *)
+    static func delayed(
+        duration: Duration,
+        operation: @escaping () async -> Void
+    ) -> Self where Success == Void, Failure == Never {
+        Self {
+            do {
+                try await Task<Never, Never>.sleep(for: duration)
+                await operation()
+            } catch {}
+        }
+    }
 }

@@ -15,7 +15,7 @@ struct ExampleView: View {
 
     var body: some View {
         TextField("Text", text: $text)
-            .onChange(of: text, debounceTime: .seconds(2)) { newValue in
+            .onChange(of: text, debounceTime: .seconds(2)) { oldValue, newValue in
                 // Action executed each time 2 seconds pass since change of text property
             }
             .task(id: text, debounceTime: .milliseconds(250)) { 
