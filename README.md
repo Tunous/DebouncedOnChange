@@ -4,7 +4,11 @@
 
 A SwiftUI onChange and task view modifiers with additional debounce time.
 
+[Documentation](https://swiftpackageindex.com/Tunous/DebouncedOnChange/main/documentation/debouncedonchange)
+
 ## Usage
+
+### Basics
 
 ```swift
 import SwiftUI
@@ -23,7 +27,32 @@ struct ExampleView: View {
             }
     }
 }
-``` 
+```
+
+### Manually cancelling debounced actions
+
+```swift
+struct Sample: View {
+    @State private var debouncer = Debouncer() // 1. Store debouncer to control actions
+    @State private var query = ""
+    
+    var body: some View {
+        TextField("Query", text: $query)
+            .onChange(of: query, debounceTime: .seconds(1), debouncer: $debouncer) { // 2. Pass debouncer to onChange
+                callApi()
+            }
+            .onKeyPress(.return) {
+                debouncer.cancel() // 3. Call cancel to prevent debounced action from running
+                callApi()
+                return .handled
+            }
+    }
+    
+    private func callApi() {
+        print("Sending query \(query)")
+    }
+}
+```
 
 ## Installation
 

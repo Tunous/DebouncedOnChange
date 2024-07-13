@@ -44,7 +44,7 @@ import Foundation
 /// ```
 public struct Debouncer {
     var task: Task<Void, Never>?
-    
+
     /// Creates a new debouncer.
     public init() {}
 
